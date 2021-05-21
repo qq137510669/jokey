@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <style>
+        .red {
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div">
+        {{msg}}
+        <input v-model="value" v-on:click="msg+='a'" />
+        <span @click="fun2($event)">span的内容</span>
+        <input type="text" @keyup.a="fun3">
+        <input type="text" v-bind:value="name" v-on:input="name=$event.target.value">
+        <p>
+            <button @click="toggleValue">切换</button>
+        </p>
+        <span v-bind:style="red">span</span>
+    </div>
+    <script>
+        Vue.config.keyCodes.a = 65; //自定义按键修饰符
+        let vue = new Vue({
+            el: "#div",
+            data: {
+                msg: "abc",
+                value: "a",
+                name: "庞光",
+                red: "background-color:red"
+            },
+            methods: {
+                fun1: function() {
+                    console.log("fun1");
+                    console.log(this);
+                },
+                fun2: (param) => {
+                    console.log("fun2");
+                    console.log(param.target);
+                },
+                fun3: (e) => {
+                    console.log(e.keyCode);
+                },
+                toggleValue: () => {
+                    alert(this.name);
+                    this.name = "王大";
+
+                }
+            }
+        })
+        setTimeout(function() {
+            vue.msg += "1";
+            vue.value += "2";
+        }, 1000)
+    </script>
+</body>
+
+</html>
