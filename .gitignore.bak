@@ -1,0 +1,2 @@
+#不跟踪node_modules下的文件
+node_modules/

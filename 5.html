@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <ul>
+            <li v-for="item in arr">
+                {{item}}
+            </li>
+        </ul>
+
+        <button @click="editArray">修改数组元素值</button>
+        <ul>
+            <li v-for="(value,key ,index) in person" @click="del(value)">
+                {{value}}+"--"+{{key}}+"--"+{{index}}
+            </li>
+        </ul>
+        <button @click="editObject">修改对象值</button>
+    </div>
+    <script>
+        var vue = new Vue({
+            el: "#div",
+            data: {
+                arr: ['北京', '上海', '天津', '重庆', '深圳', '广州', '大连'],
+                person: {
+                    name: "王大",
+                    age: 18,
+                    address: "北京市东城区"
+                }
+            },
+            methods: {
+                editArray: function() {
+                    //使用数组索引修改元素值，页面数据不会修改
+                    //this.arr[6] = '杭州';
+                    this.$set(this.arr, 6, '杭州');
+
+                },
+                editObject: function() {
+                    this.person.address = "北京市西城区";
+                    this.$set(this.person, "name", "王二");
+                    this.person.email = "137510669@qq.com";
+
+                },
+                del: function(e) {
+                    console.log(e);
+                }
+            },
+            mounted: function() {
+                console.log("挂载后触发的函数,用于从后台获取数据时使用");
+            }
+        })
+    </script>
+</body>
+
+</html>

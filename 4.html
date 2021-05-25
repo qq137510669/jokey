@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <p>{{msg|toUpper}}</p>
+        <p>{{date|formatDate('-')}}</p>
+    </div>
+</body>
+<script>
+    //自定义全局过滤器
+    Vue.filter("toUpper", function(e) {
+        return e.toUpperCase();
+    })
+    var vue = new Vue({
+        el: "#div",
+        data: {
+            msg: "a",
+            date: new Date()
+        },
+        //定义局部过滤器
+        filters: {
+            formatDate: function(e, format) {
+                console.log(e);
+                console.log(this);
+                let year = e.getFullYear();
+                let month = e.getMonth() + 1;
+                let day = e.getDate();
+                return year + format + month + format + day;
+            }
+        }
+    })
+</script>
+
+</html>

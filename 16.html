@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <!-- router-link标签是vue定义的组件渲染成<a href="#key1"></a>的形式-->
+        <router-link to="/key1/a">key1a</router-link>
+        <router-link to="/key1/b">key1b</router-link>
+        <router-link to="/key2/c">key2</router-link>
+        <router-link to="/key3">key3</router-link>
+        <router-link to="/key4/d">key4</router-link>
+        <!--通过路由名字跳转到指定路由-->
+        <router-link :to="{name:'routename',params:{name:'王五',age:18}}">key5</router-link>
+        <!-- 路由占位符 -->
+        <router-view></router-view>
+    </div>
+    <script>
+        const key1 = {
+            template: "<h1>keyone{{$route.params.id}}</h1>"
+        };
+        const key2 = {
+            props: ['id'], //接收参数
+            template: "<h1>keytwo 传递的参数值{{id}}<p><router-link to='/key21'>key21</router-link><router-link to='/key22'>key22</router-link></p><router-view></router-view></h1>"
+        };
+        const key21 = {
+            template: "<span>span中的key21</span>"
+        };
+        const key22 = {
+            template: "<span>span中的key22</span>"
+        };
+        const key3 = {
+            props: ['name', 'age'],
+            template: "<h1>keyThree,name=={{name}},age==={{age}}<h1>"
+        };
+        const key4 = {
+            props: ['name', 'age', 'id'],
+            template: "<h1>keyFour,id=={{id}},name=={{name}},age==={{age}}<h1>"
+        }
+        const router = new VueRouter({
+            routes: [{
+                path: "/",
+                redirect: "key1" //路由重定向
+            }, {
+                path: "/key1/:id", //路由传参方式一
+                component: key1
+            }, {
+                path: "/key2/:id",
+                component: key2,
+                props: true, //路由传参方式二
+                children: [{
+                    path: "/key21",
+                    component: key21
+                }, {
+                    path: "/key22",
+                    component: key22
+                }]
+            }, {
+                path: "/key3",
+                component: key3,
+                props: {
+                    name: "王大",
+                    age: 18
+                }
+            }, {
+                path: "/key4/:id",
+                component: key4,
+                props: route => ({
+                    name: "王二",
+                    age: 18,
+                    id: route.params.id
+                }),
+                name: 'routename' //命名路由的名字，组件中
+            }]
+        })
+
+        let vue = new Vue({
+            el: "#div",
+
+            router: router
+        })
+    </script>
+</body>
+
+</html>

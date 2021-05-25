@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        {{value}}
+        <input type="text" v-model="value">
+        <!-- v-model.lazy失去焦点时修改模型变量值 -->
+        <input type="text" v-model.lazy="value">
+        <input type="text" v-focus>
+        <input type="text" v-color="red">
+        <input type="text" v-padding="padding">
+        <p>{{fun()}}</p>
+        <p>{{fun1}}/p>
+            <input type="text" v-model="param1">
+    </div>
+    <script>
+        //自定义v-focus指令
+        Vue.directive("focus", {
+                inserted: function(e) {
+                    e.focus();
+                }
+            })
+            //自定义v-color指令
+        Vue.directive("color", {
+            inserted: function(e, binding) {
+                console.log(binding.value); //binding.value表示指示的参数值
+                console.log(e);
+                e.style.backgroundColor = binding.value;
+            }
+        })
+        var vue = new Vue({
+            el: "#div",
+            data: {
+                value: "",
+                red: "red",
+                padding: "15px",
+                param1: ""
+            },
+            methods: {
+                fun() {
+                    console.log("fun")
+                    console.log(this.value);
+                }
+            },
+            directives: { //自定义局部指令v-padding，只在当前vue对象中有效
+                padding: {
+                    inserted: function(e, binding) {
+                        e.style.padding = binding.value;
+                    }
+                }
+            },
+            //计算属性的方法 computed与methods中的函数的区别是
+            //computed带有缓存（缓存了之前的结果），methods没有缓存
+            computed: {
+                fun1: function() {
+                    console.log("fun1");
+                }
+            },
+            watch: {
+                //监听器，当value值发现变化时触发函数
+                param1: function(e) { //方法名与模型变量名需一致
+                    console.log("watch");
+                    console.log(e);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

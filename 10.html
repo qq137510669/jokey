@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <widget>{{msg}}
+            <p slot="slot1">slot1的内容</p>
+            <template slot="slot2">slot2的信息</template>
+        </widget>
+    </div>
+    <script>
+        Vue.component("widget", {
+            template: "<div>div的内容<slot></slot><slot name='slot1'></slot><slot name='slot2'></slot></div>"
+        })
+        let vue = new Vue({
+            el: "#div",
+            data: {
+                msg: "slot的信息"
+            }
+        })
+    </script>
+</body>
+
+</html>

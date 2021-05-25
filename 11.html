@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <each-arr :arr='arr'>
+            <template slot-scope="slotProps">
+                <h1 v-if="slotProps.city=='上海'">{{slotProps.city}} </h1>
+                    <span v-else>{{slotProps.city}}</span>
+            </template>
+        </each-arr>
+    </div>
+    <script>
+        Vue.component("each-arr", {
+            props: ['arr'],
+            template: `<ul>
+                <li :key="item.index" v-for="item in arr"> 
+                    <slot :city='item'>{{item}}</slot>
+                   
+                    </li>
+                   
+                </ul>`
+        })
+        let vue = new Vue({
+            el: "div",
+            data: {
+                arr: ['北京', '上海', '天津', '杭州']
+            }
+        })
+    </script>
+</body>
+
+</html>

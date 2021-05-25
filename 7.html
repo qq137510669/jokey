@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        {{msg}}<br>
+        <menu-li :param1="msg"></menu-li>
+        <father></father>
+    </div>
+    <script>
+        Vue.component("menu-li", {
+            data: function() {
+                return {
+                    "cmsg": '王大'
+                }
+            },
+            props: ['param1'],
+            template: '<p>{{cmsg}}----{{param1}}</p>'
+        })
+        Vue.component("child1", {
+            props: ['uname', 'age', 'person'],
+            template: "<span>{{person}}------{{uname}}</span>"
+        })
+        Vue.component("father", {
+            template: "<div><child1 v-bind:person='person' v-bind:uname='uname'></child1></div>",
+            data: function() {
+                return {
+                    person: {
+                        name: "王大",
+                        age: 18,
+                        address: "北京市东城区"
+                    },
+                    uname: "tom"
+                }
+            }
+
+        })
+        let vue = new Vue({
+            el: "#div",
+            data: {
+                msg: "王二"
+            }
+        })
+    </script>
+</body>
+
+</html>

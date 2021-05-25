@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <a href="#/key1">key1</a>
+        <a href="#/key2">key2</a>
+        <a href="#/key3">key3</a>
+        <!-- component标签是组件占位符 :is的值是组件名称-->
+        <component :is="widget"></component>
+    </div>
+    <script>
+        let vue = new Vue({
+            el: "#div",
+            components: {
+                key1: {
+                    "template": "<h1>key1</h1>"
+                },
+                key2: {
+                    "template": "<h1>key2</h1>"
+                },
+                key3: {
+                    "template": "<h1>key3</h1>"
+                }
+            },
+            data: {
+                widget: "key2"
+            }
+        })
+        window.onhashchange = function() {
+            let hash = location.hash;
+            console.log(hash)
+            switch (hash) {
+                case "#/key1":
+                    console.log("key1");
+                    vue.widget = "key1";
+                    break;
+                case "#/key2":
+                    console.log("key2");
+                    vue.widget = "key2";
+                    break;
+                case "#/key3":
+                    console.log("key3");
+                    vue.widget = "key3";
+                    break;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <div id="div">
+        <button-container></button-container>
+        <helloworld></helloworld>
+        <widgeta></widgeta>
+    </div>
+</head>
+<script>
+    // 全局组件注册
+    Vue.component("helloworld", {
+        data: function() {
+            return {
+                msg: "hello"
+            };
+        },
+        template: '<button>{{msg}}</button>'
+
+    });
+
+    Vue.component("button-container", {
+        data: function() {
+            return {
+                count: 0
+            };
+        },
+        template: '<p><button @click="count++">增加{{count}}</button><button @click="minus">减少{{count}}</button></p>',
+        methods: {
+            minus: function(e) {
+                this.count--;
+            }
+        }
+    })
+    let vue = new Vue({
+        el: "#div",
+        //定义局部组件
+        components: {
+            widgeta: {
+                data: function() {
+                    console.log(this);
+                    console.log(arguments)
+                    return {
+                        msgA: "王大"
+                    }
+                },
+                template: `<span v-text="msgA"></span>`
+            }
+        }
+    })
+</script>
+
+<body>
+
+</body>
+
+</html>

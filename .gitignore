@@ -1,0 +1,5 @@
+#不跟踪node_modules下的文件
+node_modules/
+
+#不跟踪.vscode目录下的文件
+.vscode/

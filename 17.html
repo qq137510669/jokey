@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编程式导航</title>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <router-link to="/key1">key1</router-link>
+        <router-link to="/key2">key2</router-link>
+        <router-view></router-view>
+    </div>
+    <script>
+        const key1 = {
+            template: "<h1>key1组件的内容<button @click='turn'>按钮</button></h1>",
+            methods: {
+                turn() {
+                    this.$router.push('/key2')
+                }
+            }
+        }
+        const key2 = {
+            template: '<h1>key2组件的内容<button @click="back">按钮</button</h1>',
+            methods: {
+                back() {
+                    this.$router.go(-1);
+                }
+            }
+        }
+        let vueRouter = new VueRouter({
+            routes: [{
+                path: "/key1",
+                component: key1
+            }, {
+                path: "/key2",
+                component: key2
+            }]
+        })
+        let vue = new Vue({
+            el: "#div",
+            router: vueRouter
+        })
+    </script>
+</body>
+
+</html>

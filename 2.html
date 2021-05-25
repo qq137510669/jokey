@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <input type="text" v-bind:value="letter">
+        <button @click="change">按钮</button>
+        <p v-for="item in arr">
+
+            <a href="#" v-if="typeof item=='object'" v-for="child in item">
+                {{child}}<br/>
+            </a>
+            <a href="#" v-else>
+                {{item}}
+         </a>
+        </p>
+    </div>
+
+    <select name="" id="sel">
+        <option value="">2000年</option>
+        <option value="">1月</option>
+        <option value="">1日</option>
+        <option value="">2001年</option>
+        <option value="">2月</option>
+        <option value="">2日</option>
+        <option value="">2003年</option>
+        <option value="">3月</option>
+        <option value="">3日</option>
+        <option value="">2004年</option>
+        <option value="">4月</option>
+        <option value="">4日</option>
+        <option value="">2005年</option>
+        <option value="">5月</option>
+        <option value="">5日</option>
+    </select>
+    <script>
+        var options = sel.getElementsByTagName("option");
+        var len = options.length;
+        var arr = [];
+        for (var i = 1; i <= len; i = i + 3) {
+            arr.push(options[i]);
+        }
+        var sel = document.getElementById("sel");
+        for (var ia = 0; ia < arr.length; ia++) {
+            sel.removeChild(arr[ia]);
+        }
+    </script>
+
+
+    <script>
+        let vue = new Vue({
+            el: "div",
+            data: {
+                letter: "a",
+                arr: ['a', 'b', 'c', {
+                    'name': 'tom',
+                    age: 18
+                }]
+            },
+            methods: {
+                change: function() {
+                    console.log(this.letter);
+                    this.letter = "b";
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

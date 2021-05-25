@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <father></father>
+    </div>
+    <script>
+        Vue.component("father", {
+            template: "<p v-bind:style='{background:color}'><child @editColor='edit_Color($event)'></child></p>",
+            methods: {
+                "edit_Color": function(e) {
+                    this.color = e;
+                }
+            },
+            data: function() {
+                return {
+                    color: 'blue'
+                }
+            }
+        })
+        Vue.component("child", {
+            template: `<span><button @click='$emit("editColor",color)'>{{name}}</button></span>`,
+            data: function() {
+                return {
+                    name: "王大",
+                    color: "red"
+                }
+            }
+        })
+        let vue = new Vue({
+            el: "#div"
+        })
+    </script>
+</body>
+
+</html>

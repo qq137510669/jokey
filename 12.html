@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        #div {
+            width: 300px;
+            margin: 50px auto;
+        }
+        
+        #div>div>div,
+        #div>div>ul {
+            width: 100%;
+            border: 1px solid blue;
+        }
+        
+        input.num {
+            width: 60px;
+        }
+    </style>
+</head>
+<div id="div">
+    <shopping-cart :dataarray="initData"></shopping-cart>
+</div>
+<script>
+    Vue.component("shopping-cart", {
+        props: ['dataarray'],
+        data: function() {
+            return {}
+        },
+        template: `
+        <div>
+            
+           <cart-title></cart-title>
+           <cart-list :sourcedata="dataarray" @deleteitem="deleteItem($event)" @editCount="editCount($event)" @sumCount="sumCount($event)"></cart-list>
+           <cart-count :datalist="dataarray"></cart-count>
+            </div>
+        `,
+        methods: {
+            deleteItem: function(e) {
+
+                var index = this.dataarray.findIndex(item => {
+                    return item.id == e.id;
+                })
+                this.dataarray.splice(index, 1);
+            },
+            editCount: function(event) {
+
+                var index = this.dataarray.findIndex((e) => {
+                    return e.id == event.id;
+                })
+                var obj = this.dataarray[index];
+                console.log(obj);
+
+                this.$set(obj, "num", event.value);
+            },
+            sumCount: function(param) {
+                console.log(param);
+                if (param.btn == '+') {
+                    this.dataarray.some((e) => {
+                        console.log("some");
+                        if (e.id == param.id) {
+
+                            e.num = e.num + 1;
+
+                            return true;
+                        }
+                    })
+                } else {
+                    this.dataarray.some((e) => {
+                        console.log("some");
+                        if (e.id == param.id) {
+
+                            e.num = e.num > 0 ? e.num - 1 : 0;
+                            return true;
+                        }
+                    })
+                }
+                var btn = param.btn;
+            }
+        },
+        components: {
+            "cart-title": {
+                template: `<div class="cart_title">标题内容</div>`
+            },
+            "cart-list": {
+                props: ['sourcedata'],
+                template: `
+                    <ul>
+                        <li :key="item.id" v-for="item in sourcedata">
+                            <span>{{item.name}}</span>
+                            <span >{{item.price}}</span>
+                            <button @click="sumCount(item.id,$event)">-</button>
+                            <input class="num" :value="item.num" @blur="editNum(item.id,$event)"/>
+                            <button @click="sumCount(item.id,$event)">+</button>
+                            <button @click="deleteItem(item.id)">删除</button>
+                            </li>
+                        </ul>
+                `,
+                methods: {
+                    deleteItem: function(e) {
+                        //子组件向父组件传递数据
+                        this.$emit("deleteitem", e);
+                    },
+                    editNum: function(e, event) {
+                        var param = {
+                            "id": e,
+                            "value": event.target.value
+                        };
+                        this.$emit("editCount", param);
+
+                    },
+                    sumCount: function(e, obj) {
+                        var param = {
+                            id: e,
+                            btn: obj.target.innerHTML
+                        };
+                        this.$emit("sumCount", param);
+                    }
+                }
+            },
+            "cart-count": {
+                props: ['datalist'],
+                template: `
+                    <div>总计:{{totalCountA}}</div>
+                `,
+                data: function() {
+                    return {
+                        "totalCount": 0
+                    }
+                },
+                computed: {
+                    totalCountA: function() {
+                        var count = 0;
+                        this.datalist.forEach((e) => {
+                            count += e.num * e.price;
+                        });
+                        return count;
+                    }
+                }
+            }
+        }
+    })
+    let vue = new Vue({
+        el: "#div",
+        data: {
+            initData: [{
+                "id": 1,
+                "name": "电脑",
+                "price": 60,
+                "num": 1
+            }, {
+                "id": 2,
+                "name": "手机",
+                "price": 45,
+                "num": 1
+            }, {
+                "id": 3,
+                "name": "平板",
+                "price": 40,
+                "num": 1
+            }, {
+                "id": 4,
+                "name": "阅读器",
+                "price": 38,
+                "num": 1
+            }]
+        }
+    })
+</script>
+
+<body>
+
+</body>
+
+</html>

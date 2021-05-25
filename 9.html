@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="div">
+        <widget1></widget1>
+        <widget2></widget2>
+        <button @click="destory">销毁事件</button>
+    </div>
+
+    <script>
+        let eventCenter = new Vue();
+        Vue.component("widget1", {
+            template: "<div>{{value}}<button @click='fun1'>按钮1</button></div>",
+            data: function() {
+                return {
+                    value: 0
+                };
+            },
+            methods: {
+                fun1: function() { //触发btn2_event事件
+                    eventCenter.$emit('btn2_event', 2);
+                }
+            },
+            mounted: function() { //监听btn1_event事件
+                eventCenter.$on("btn1_event", (param) => {
+                    this.value += param;
+                })
+            }
+        })
+        Vue.component("widget2", {
+            template: "<div>{{value}}<button @click='fun2'>按钮2</button></div>",
+            data: function() {
+                return {
+                    "value": 0
+                };
+            },
+            methods: {
+                fun2: function() {
+                    eventCenter.$emit('btn1_event', 1);
+                }
+            },
+            mounted: function() { //监听事件
+                eventCenter.$on("btn2_event", (param) => {
+                    this.value += param;
+                })
+            }
+        })
+
+        let vue = new Vue({
+            el: "div",
+            methods: {
+                destory: function() {
+                    console.log(eventCenter);
+                    eventCenter.$off("btn2_event");
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
